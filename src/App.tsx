@@ -21,7 +21,8 @@ import {
 import { Student, AttendanceRecord, SqlLog } from "./types";
 import { seedStudents } from "./seedStudents";
 import { formatTo12HourTime } from "./utils/timeFormatter";
-import { arduinoSerial, findStudentByArduinoId } from "./utils/arduinoSerial";
+import { arduinoSerial, findStudentByArduinoId, parseArduinoIdFromLine } from "./utils/arduinoSerial";
+import { loadDatabase, saveDatabaseToDisk, exportDatabaseBackup } from "./utils/dbStorage";
 import Sidebar from "./components/Sidebar";
 import BiometricScanner from "./components/BiometricScanner";
 import StudentTable from "./components/StudentTable";
@@ -119,78 +120,13 @@ export default function App() {
     type: "success"
   });
 
-  // Load from localStorage or use seeds
+  // Load from disk (/api/db -> database.json) or fallback
   useEffect(() => {
-    // 1. Students
-    const cachedStudents = localStorage.getItem("colegio_attend_students");
-    let currentStudentsList: Student[] = [];
-    if (cachedStudents) {
-      currentStudentsList = JSON.parse(cachedStudents);
-      setStudents(currentStudentsList);
-    } else {
-      currentStudentsList = seedStudents;
-      setStudents(seedStudents);
-      localStorage.setItem("colegio_attend_students", JSON.stringify(seedStudents));
-    }
-
-    // 2. Attendance Records
-    const cachedAttendance = localStorage.getItem("colegio_attend_records");
-    if (cachedAttendance) {
-      setAttendanceRecords(JSON.parse(cachedAttendance));
-    } else {
-      const todayStr = getTodayFormatted();
-      // Seed initial mock attendance for today and historical date to ensure data presence
-      const initialRecords: AttendanceRecord[] = [
-        { id: "rec-1", studentId: "stud-1", date: "2026-06-09", present: true, timestamp: "08:02:10 AM", method: "Biométrico" },
-        { id: "rec-2", studentId: "stud-2", date: "2026-06-09", present: true, timestamp: "07:58:45 AM", method: "Biométrico" },
-        { id: "rec-3", studentId: "stud-4", date: "2026-06-09", present: true, timestamp: "08:15:30 AM", method: "Biométrico" },
-        { id: "rec-4", studentId: "stud-11", date: "2026-06-09", present: true, timestamp: "08:01:05 AM", method: "Biométrico" },
-        { id: "rec-5", studentId: "stud-12", date: "2026-06-09", present: true, timestamp: "07:55:12 AM", method: "Biométrico" },
-      ];
-
-      // If today is different from 2026-06-09, also seed today's records
-      if (todayStr !== "2026-06-09") {
-        initialRecords.push(
-          { id: "rec-t1", studentId: "stud-1", date: todayStr, present: true, timestamp: "07:50:00 AM", method: "Biométrico" },
-          { id: "rec-t2", studentId: "stud-2", date: todayStr, present: true, timestamp: "07:52:15 AM", method: "Biométrico" },
-          { id: "rec-t3", studentId: "stud-3", date: todayStr, present: true, timestamp: "08:00:22 AM", method: "Biométrico" },
-          { id: "rec-t4", studentId: "stud-4", date: todayStr, present: true, timestamp: "08:05:10 AM", method: "Biométrico" },
-          { id: "rec-t5", studentId: "stud-11", date: todayStr, present: true, timestamp: "07:58:30 AM", method: "Biométrico" }
-        );
-      }
-
-      setAttendanceRecords(initialRecords);
-      localStorage.setItem("colegio_attend_records", JSON.stringify(initialRecords));
-    }
-
-    // 3. Dynamic system activity logs
-    const cachedLogs = localStorage.getItem("colegio_attend_sql_logs");
-    if (cachedLogs) {
-      setSqlLogs(JSON.parse(cachedLogs));
-    } else {
-      const initialLogs: SqlLog[] = [
-        {
-          id: "log-init-1",
-          query: `CREATE TABLE estudiantes (\n  id VARCHAR(50) PRIMARY KEY,\n  nombre VARCHAR(100) NOT NULL,\n  apellido VARCHAR(100) NOT NULL,\n  id_academico VARCHAR(20) UNIQUE,\n  email VARCHAR(150) NOT NULL,\n  huella_hash VARCHAR(255) UNIQUE NOT NULL,\n  fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);`,
-          timestamp: formatTo12HourTime(),
-          rowsAffected: 0
-        },
-        {
-          id: "log-init-2",
-          query: `CREATE TABLE asistencia (\n  id VARCHAR(50) PRIMARY KEY,\n  estudiante_id VARCHAR(50) REFERENCES estudiantes(id),\n  fecha DATE NOT NULL,\n  presente BOOLEAN DEFAULT FALSE,\n  hora_marca TIME,\n  metodo VARCHAR(20)\n);`,
-          timestamp: formatTo12HourTime(),
-          rowsAffected: 0
-        },
-        {
-          id: "log-init-3",
-          query: `INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) VALUES\n('stud-1', 'Mateo', 'Alvarez', '11A-01', 'mateo.alvarez@sanpedroclaver.edu.co', 'AES_256_FNG_5f9d7a2c'),\n('stud-2', 'Sofía', 'Bermúdez', '11A-02', 'sofia.bermudez@sanpedroclaver.edu.co', 'AES_256_FNG_3a2b1c9d'),\n('stud-11', 'Juan Carlos', 'Pérez', '11A-11', 'juan.perez@sanpedroclaver.edu.co', 'AES_256_FNG_0028fcda');`,
-          timestamp: formatTo12HourTime(),
-          rowsAffected: 15
-        }
-      ];
-      setSqlLogs(initialLogs);
-      localStorage.setItem("colegio_attend_sql_logs", JSON.stringify(initialLogs));
-    }
+    loadDatabase().then((db) => {
+      setStudents(db.students);
+      setAttendanceRecords(db.attendanceRecords);
+      setSqlLogs(db.sqlLogs);
+    });
   }, []);
 
   // Global serial reader subscription for background attendance tracking
@@ -198,10 +134,9 @@ export default function App() {
     const unsub = arduinoSerial.onMessage((line) => {
       if (!isRealMode) return;
 
-      if (line.startsWith(">>> ID:")) {
-        const parts = line.split(":");
-        const arduinoId = parseInt(parts[1], 10);
-        const match = findStudentByArduinoId(students, arduinoId);
+      const parsed = parseArduinoIdFromLine(line);
+      if (parsed) {
+        const match = findStudentByArduinoId(students, parsed.id);
         if (match) {
           const timeNow = formatTo12HourTime();
           handleRegisterAttendanceBiometric(match.id, timeNow);
@@ -244,15 +179,16 @@ export default function App() {
   const handleClearSqlLogs = () => {
     if (confirm("¿Está seguro de limpiar todo el historial de transacciones SQL?")) {
       setSqlLogs([]);
-      localStorage.setItem("colegio_attend_sql_logs", JSON.stringify([]));
+      saveDatabaseToDisk({ students, attendanceRecords, sqlLogs: [] });
     }
   };
 
   // Create or update a student profile (CRUD - Add / Edit)
   const handleSaveStudent = (data: Partial<Student>) => {
+    let updatedList: Student[] = [];
     if (editingStudent) {
       // Edit student
-      const updatedList = students.map((s) => {
+      updatedList = students.map((s) => {
         if (s.id === editingStudent.id) {
           return {
             ...s,
@@ -267,7 +203,6 @@ export default function App() {
       });
 
       setStudents(updatedList);
-      localStorage.setItem("colegio_attend_students", JSON.stringify(updatedList));
 
       // Execute SQL updates Log representation
       runSqlLog(
@@ -291,9 +226,8 @@ export default function App() {
         registeredAt: new Date().toISOString().substring(0, 19).replace("T", " ")
       };
 
-      const updatedList = [...students, newStudent];
+      updatedList = [...students, newStudent];
       setStudents(updatedList);
-      localStorage.setItem("colegio_attend_students", JSON.stringify(updatedList));
 
       // Execute SQL insert Log representation
       runSqlLog(
@@ -307,6 +241,12 @@ export default function App() {
       );
     }
 
+    saveDatabaseToDisk({
+      students: updatedList,
+      attendanceRecords,
+      sqlLogs
+    });
+
     setIsAddEditOpen(false);
     setEditingStudent(null);
   };
@@ -319,18 +259,22 @@ export default function App() {
     // Filter list
     const updatedList = students.filter(s => s.id !== studentId);
     setStudents(updatedList);
-    localStorage.setItem("colegio_attend_students", JSON.stringify(updatedList));
 
     // Filter attendance records to keep schema reference integrous
     const updatedAttendance = attendanceRecords.filter(r => r.studentId !== studentId);
     setAttendanceRecords(updatedAttendance);
-    localStorage.setItem("colegio_attend_records", JSON.stringify(updatedAttendance));
 
     // Output SQL deletion query Log representation
     runSqlLog(
       `BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = '${studentId}';\n  DELETE FROM estudiantes WHERE id = '${studentId}';\nCOMMIT;`,
       2
     );
+
+    saveDatabaseToDisk({
+      students: updatedList,
+      attendanceRecords: updatedAttendance,
+      sqlLogs
+    });
 
     triggerToast(
       "Estudiante Eliminado",
@@ -396,7 +340,11 @@ export default function App() {
     }
 
     setAttendanceRecords(updatedRecords);
-    localStorage.setItem("colegio_attend_records", JSON.stringify(updatedRecords));
+    saveDatabaseToDisk({
+      students,
+      attendanceRecords: updatedRecords,
+      sqlLogs
+    });
   };
 
   // High-fidelity sensor check in callback with fingerprint pattern matched
@@ -439,7 +387,11 @@ export default function App() {
     }
 
     setAttendanceRecords(updatedRecords);
-    localStorage.setItem("colegio_attend_records", JSON.stringify(updatedRecords));
+    saveDatabaseToDisk({
+      students,
+      attendanceRecords: updatedRecords,
+      sqlLogs
+    });
 
     triggerToast(
       "Biometría Reconocida",
@@ -516,8 +468,8 @@ export default function App() {
               <button
                 onClick={handleToday}
                 className={`px-2.5 py-1 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${selectedDate === getTodayFormatted()
-                    ? "bg-brand-blue text-white shadow-xs"
-                    : "bg-white text-slate-700 hover:bg-slate-200"
+                  ? "bg-brand-blue text-white shadow-xs"
+                  : "bg-white text-slate-700 hover:bg-slate-200"
                   }`}
               >
                 Hoy

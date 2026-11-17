@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import { Student, AttendanceRecord } from "../types";
 import { formatTo12HourTime, isAfter630AM } from "../utils/timeFormatter";
-import { arduinoSerial, findStudentByArduinoId, SerialStatus } from "../utils/arduinoSerial";
+import { arduinoSerial, findStudentByArduinoId, parseArduinoIdFromLine, SerialStatus } from "../utils/arduinoSerial";
 
 interface BiometricScannerProps {
   students: Student[];
@@ -58,6 +58,14 @@ export default function BiometricScanner({
   // ARDUINO SERIAL STATES
   const [serialStatus, setSerialStatus] = useState<SerialStatus>(arduinoSerial.getStatus());
   const [serialLogs, setSerialLogs] = useState<string[]>(arduinoSerial.getLogs());
+  const [customCommand, setCustomCommand] = useState<string>("");
+
+  const handleSendCustomCommand = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customCommand.trim()) return;
+    await arduinoSerial.sendCommand(customCommand.trim());
+    setCustomCommand("");
+  };
 
   // Custom dropdown states for simulation picker
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -102,6 +110,9 @@ export default function BiometricScanner({
         setStatusMessage(`Error Serial: ${errorDetails}`);
       } else if (newStatus === "connected") {
         setStatusMessage("");
+        if (isRealMode) {
+          arduinoSerial.sendIdentifyCommand();
+        }
       }
     });
 
@@ -114,18 +125,18 @@ export default function BiometricScanner({
 
       const cleanLine = line.trim();
 
-      // 1. >>> ID:X:CONF:Y -> Identified student (Flexible Regex)
-      const idMatch = cleanLine.match(/ID\s*:\s*(\d+)(?:\s*:\s*CONF\s*:\s*(\d+))?/i);
-      if (idMatch && !cleanLine.includes("REGISTRO")) {
-        const arduinoId = parseInt(idMatch[1], 10);
-        const confidence = idMatch[2] ? parseInt(idMatch[2], 10) : 100;
+      // Universal Arduino ID Parsing (Adafruit library, custom Serial, etc.)
+      const parsed = parseArduinoIdFromLine(cleanLine);
+      if (parsed) {
+        const arduinoId = parsed.id;
+        const confidence = parsed.confidence ?? 100;
 
         const matchedStudent = findStudentByArduinoId(students, arduinoId);
         const timeNow = formatTo12HourTime();
 
         if (matchedStudent) {
           setScanState("success");
-          setStatusMessage(`¡Huella Encontrada! ID #${arduinoId} (Confianza: ${confidence}%)`);
+          setStatusMessage(`¡Huella Encontrada! ID #${arduinoId} (${matchedStudent.lastName}, ${matchedStudent.name})`);
           onRegisterAttendance(matchedStudent.id, timeNow);
 
           setLastRegistered({
@@ -194,6 +205,13 @@ export default function BiometricScanner({
   // Ping serial status button
   const handlePingStatus = () => {
     arduinoSerial.sendCommand("ESTADO");
+  };
+
+  // Force activate attendance search mode
+  const handleActivateIdentify = async () => {
+    await arduinoSerial.sendIdentifyCommand();
+    setStatusMessage("Modo Lectura de Asistencia activado (Comandos enviados)");
+    setTimeout(() => setStatusMessage(""), 3000);
   };
 
   // Wipe Arduino memory handler
@@ -368,6 +386,14 @@ export default function BiometricScanner({
                   </button>
                 ) : (
                   <>
+                    <button
+                      onClick={handleActivateIdentify}
+                      className="px-3 py-1.5 bg-brand-blue hover:bg-brand-blue-deep text-white text-xs font-bold rounded-lg transition-colors cursor-pointer flex items-center gap-1 shadow-xs"
+                      title="Forzar al Arduino a entrar en modo Lectura de Asistencia"
+                    >
+                      <Fingerprint size={13} />
+                      Modo Asistencia
+                    </button>
                     <button
                       onClick={handlePingStatus}
                       className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg transition-colors cursor-pointer"
@@ -661,7 +687,7 @@ export default function BiometricScanner({
 
           {/* Right side column: Real-time Serial Console Logs */}
           <div className="space-y-4">
-            <div className="p-4 bg-slate-900 text-white rounded-xl font-mono text-xs overflow-hidden leading-relaxed border border-slate-700 shadow-sm flex flex-col h-56">
+            <div className="p-4 bg-slate-900 text-white rounded-xl font-mono text-xs overflow-hidden leading-relaxed border border-slate-700 shadow-sm flex flex-col h-64">
               <div className="flex items-center justify-between pb-2 border-b border-slate-700 mb-2 shrink-0">
                 <span className="text-brand-lila font-bold flex items-center gap-1.5">
                   <Terminal size={14} /> Consola de Hardware Serial
@@ -688,6 +714,24 @@ export default function BiometricScanner({
                 )}
                 <div ref={consoleBottomRef} />
               </div>
+
+              {isRealMode && (
+                <form onSubmit={handleSendCustomCommand} className="mt-2.5 pt-2 border-t border-slate-800 flex gap-2 shrink-0">
+                  <input
+                    type="text"
+                    placeholder="Enviar comando COM manual (ej. REGISTRAR:1)..."
+                    value={customCommand}
+                    onChange={(e) => setCustomCommand(e.target.value)}
+                    className="flex-1 bg-slate-800 border border-slate-700 text-white px-3 py-1.5 rounded-lg text-[11px] font-mono outline-none focus:border-brand-blue"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-brand-blue hover:bg-brand-blue-deep text-white px-3 py-1.5 rounded-lg text-[11px] font-bold shrink-0 cursor-pointer"
+                  >
+                    Enviar
+                  </button>
+                </form>
+              )}
             </div>
 
             {/* Dynamic last checked result card */}

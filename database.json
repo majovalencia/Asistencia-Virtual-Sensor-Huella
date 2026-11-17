@@ -1,0 +1,827 @@
+{
+  "students": [
+    {
+      "id": "stud-1794342170195",
+      "name": "Nicoll",
+      "lastName": "Oyuela Osorio",
+      "idAcademico": "11A-2",
+      "email": "nicoll.oyuelaosorio@sanpedroclaver.edu.co",
+      "fingerprintHash": "AES_256_FNG_ID_2_283d9953",
+      "registeredAt": "2026-11-10 20:22:50"
+    },
+    {
+      "id": "stud-1794342223107",
+      "name": "Daniel ",
+      "lastName": "Guarin Ramirez",
+      "idAcademico": "11A-3",
+      "email": "daniel.guarinramirez@sanpedroclaver.edu.co",
+      "fingerprintHash": "AES_256_FNG_ID_3_8e1e1b6d",
+      "registeredAt": "2026-11-10 20:23:43"
+    },
+    {
+      "id": "stud-1794486030125",
+      "name": "Maryuri ",
+      "lastName": "Jaramillo",
+      "idAcademico": "11A-3",
+      "email": "maryuri.jaramillo@sanpedroclaver.edu.co",
+      "fingerprintHash": "AES_256_FNG_ID_3_e5dc7968",
+      "registeredAt": "2026-11-12 12:20:30"
+    }
+  ],
+  "attendanceRecords": [
+    {
+      "id": "rec-1794342292908",
+      "studentId": "stud-1794342170195",
+      "date": "2026-11-10",
+      "present": true,
+      "timestamp": "03:24:52 PM",
+      "method": "Biométrico"
+    },
+    {
+      "id": "rec-1794410940126",
+      "studentId": "stud-1794342223107",
+      "date": "2026-11-11",
+      "present": true,
+      "timestamp": "07:21:09 AM",
+      "method": "Biométrico"
+    },
+    {
+      "id": "rec-1794410948386",
+      "studentId": "stud-1794342170195",
+      "date": "2026-11-11",
+      "present": true,
+      "timestamp": "07:19:01 AM",
+      "method": "Biométrico"
+    }
+  ],
+  "sqlLogs": [
+    {
+      "id": "log-1790718662444-m8fd",
+      "query": "INSERT INTO asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790718662444', 'stud-1790716566630', '2026-09-29', TRUE, '04:51:02 PM', 'Manual');",
+      "timestamp": "04:51:02 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790718663798-1r1w",
+      "query": "UPDATE asistencia \nSET presente = FALSE, hora_marca = NULL, metodo = NULL \nWHERE estudiante_id = 'stud-1790716566630' AND fecha = '2026-09-29';",
+      "timestamp": "04:51:03 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790718693181-osu6",
+      "query": "UPDATE asistencia \nSET presente = TRUE, hora_marca = '04:51:33 PM', metodo = 'Manual' \nWHERE estudiante_id = 'stud-1790716566630' AND fecha = '2026-09-29';",
+      "timestamp": "04:51:33 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790718696552-hemy",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790716566630';\n  DELETE FROM estudiantes WHERE id = 'stud-1790716566630';\nCOMMIT;",
+      "timestamp": "04:51:36 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718817176-1xwh",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790718817176', 'alejo', 'lopez', '11A-1', 'alejo.lopez@sanpedroclaver.edu.co', 'AES_256_FNG_ID_1_8944ca5e');",
+      "timestamp": "04:53:37 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790718822988-7swa",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '04:53:42 PM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1' AND fecha = '2026-09-29' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "04:53:42 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790718830136-7m82",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '04:53:50 PM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1' AND fecha = '2026-09-29' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "04:53:50 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790718853786-zdpg",
+      "query": "UPDATE asistencia \nSET presente = FALSE, hora_marca = NULL, metodo = NULL \nWHERE estudiante_id = 'stud-1' AND fecha = '2026-09-29';",
+      "timestamp": "04:54:13 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790718858430-3cgj",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1';\n  DELETE FROM estudiantes WHERE id = 'stud-1';\nCOMMIT;",
+      "timestamp": "04:54:18 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718860358-w5on",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-2';\n  DELETE FROM estudiantes WHERE id = 'stud-2';\nCOMMIT;",
+      "timestamp": "04:54:20 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718862142-tpmb",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-3';\n  DELETE FROM estudiantes WHERE id = 'stud-3';\nCOMMIT;",
+      "timestamp": "04:54:22 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718863484-7o2l",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-4';\n  DELETE FROM estudiantes WHERE id = 'stud-4';\nCOMMIT;",
+      "timestamp": "04:54:23 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718873664-kknl",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-5';\n  DELETE FROM estudiantes WHERE id = 'stud-5';\nCOMMIT;",
+      "timestamp": "04:54:33 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718875039-i5wd",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-6';\n  DELETE FROM estudiantes WHERE id = 'stud-6';\nCOMMIT;",
+      "timestamp": "04:54:35 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718876272-gpze",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-7';\n  DELETE FROM estudiantes WHERE id = 'stud-7';\nCOMMIT;",
+      "timestamp": "04:54:36 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718877465-dtd9",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790717629966';\n  DELETE FROM estudiantes WHERE id = 'stud-1790717629966';\nCOMMIT;",
+      "timestamp": "04:54:37 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718878637-9q6r",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-8';\n  DELETE FROM estudiantes WHERE id = 'stud-8';\nCOMMIT;",
+      "timestamp": "04:54:38 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718879739-oqv0",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790718817176';\n  DELETE FROM estudiantes WHERE id = 'stud-1790718817176';\nCOMMIT;",
+      "timestamp": "04:54:39 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718880907-npl5",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-9';\n  DELETE FROM estudiantes WHERE id = 'stud-9';\nCOMMIT;",
+      "timestamp": "04:54:40 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718882026-tmch",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-10';\n  DELETE FROM estudiantes WHERE id = 'stud-10';\nCOMMIT;",
+      "timestamp": "04:54:42 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718883141-v2op",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-11';\n  DELETE FROM estudiantes WHERE id = 'stud-11';\nCOMMIT;",
+      "timestamp": "04:54:43 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718884366-4xgl",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-12';\n  DELETE FROM estudiantes WHERE id = 'stud-12';\nCOMMIT;",
+      "timestamp": "04:54:44 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718885493-1mo5",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-13';\n  DELETE FROM estudiantes WHERE id = 'stud-13';\nCOMMIT;",
+      "timestamp": "04:54:45 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718886696-t0ku",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-14';\n  DELETE FROM estudiantes WHERE id = 'stud-14';\nCOMMIT;",
+      "timestamp": "04:54:46 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718888196-jka4",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-15';\n  DELETE FROM estudiantes WHERE id = 'stud-15';\nCOMMIT;",
+      "timestamp": "04:54:48 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790718908957-8vlk",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790718908956', 'Alejandro ', 'Lopez', '11A-1', 'alejandro.lopez@sanpedroclaver.edu.co', 'AES_256_FNG_ID_1_e275c8d0');",
+      "timestamp": "04:55:08 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790718915860-ynng",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790718915860', 'stud-1790718908956', '2026-09-29', TRUE, '04:55:15 PM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "04:55:15 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790718964655-kqiv",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790718964655', 'Daniel ', 'Guarin', '11A-2', 'daniel.guarin@sanpedroclaver.edu.co', 'AES_256_FNG_ID_2_815531e9');",
+      "timestamp": "04:56:04 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790718981475-3dme",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790718981475', 'stud-1790718964655', '2026-09-29', TRUE, '04:56:21 PM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "04:56:21 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790719007509-cf21",
+      "query": "UPDATE asistencia \nSET presente = FALSE, hora_marca = NULL, metodo = NULL \nWHERE estudiante_id = 'stud-1790718908956' AND fecha = '2026-09-29';",
+      "timestamp": "04:56:47 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790719015599-fv57",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '04:56:55 PM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1790718908956' AND fecha = '2026-09-29' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "04:56:55 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790719020543-z433",
+      "query": "UPDATE asistencia \nSET presente = FALSE, hora_marca = NULL, metodo = NULL \nWHERE estudiante_id = 'stud-1790718908956' AND fecha = '2026-09-29';",
+      "timestamp": "04:57:00 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790719021342-dbn8",
+      "query": "UPDATE asistencia \nSET presente = FALSE, hora_marca = NULL, metodo = NULL \nWHERE estudiante_id = 'stud-1790718964655' AND fecha = '2026-09-29';",
+      "timestamp": "04:57:01 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790719064025-cuk3",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790719064025', 'Maria de los Angeles', 'Giraldo Arroyave', '11A-3', 'mariadelosangeles.giraldoarroyave@sanpedroclaver.edu.co', 'AES_256_FNG_ID_3_aa17c786');",
+      "timestamp": "04:57:44 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790719101055-vebr",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790719101054', 'Nicoll', 'Oyuela Osorio', '11A-4', 'nicoll.oyuelaosorio@sanpedroclaver.edu.co', 'AES_256_FNG_ID_4_57d26d3d');",
+      "timestamp": "04:58:21 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790719116583-tfd7",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '04:58:36 PM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1790718964655' AND fecha = '2026-09-29' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "04:58:36 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790719130482-7jqq",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '04:58:50 PM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1790718908956' AND fecha = '2026-09-29' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "04:58:50 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790719140799-x42c",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790719140799', 'stud-1790719064025', '2026-09-29', TRUE, '04:59:00 PM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "04:59:00 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790778658714-x242",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790719064025';\n  DELETE FROM estudiantes WHERE id = 'stud-1790719064025';\nCOMMIT;",
+      "timestamp": "09:30:58 AM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790778663265-ia30",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790718964655';\n  DELETE FROM estudiantes WHERE id = 'stud-1790718964655';\nCOMMIT;",
+      "timestamp": "09:31:03 AM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790778667235-z1ti",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790718908956';\n  DELETE FROM estudiantes WHERE id = 'stud-1790718908956';\nCOMMIT;",
+      "timestamp": "09:31:07 AM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790779061608-y975",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790779061608', 'Daniel ', 'Guarin Ramirez', '11A-1', 'daniel.guarinramirez@sanpedroclaver.edu.co', 'AES_256_FNG_ID_1_9c0ae6cb');",
+      "timestamp": "09:37:41 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790779069241-hq5o",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790779069241', 'stud-1790779061608', '2026-09-30', TRUE, '09:37:49 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "09:37:49 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790779162400-ioe3",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790779162400', 'daniela ', 'perez ', '11A-2', 'daniela.perez@sanpedroclaver.edu.co', 'AES_256_FNG_ID_2_e9051705');",
+      "timestamp": "09:39:22 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790779166535-64ai",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790779166535', 'stud-1790779162400', '2026-09-30', TRUE, '09:39:26 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "09:39:26 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790779172215-ec19",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '09:39:32 AM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1790779162400' AND fecha = '2026-09-30' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "09:39:32 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790779183753-iwbu",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790779162400';\n  DELETE FROM estudiantes WHERE id = 'stud-1790779162400';\nCOMMIT;",
+      "timestamp": "09:39:43 AM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1790779957558-1eja",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790779957558', 'María de los ángeles ', 'Giraldo Arroyave ', '11A-2', 'maríadelosángeles.giraldoarroyave@sanpedroclaver.edu.co', 'AES_256_FNG_ID_2_69a4a551');",
+      "timestamp": "09:52:37 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790780072035-7vrk",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790780072035', 'Nicoll ', 'Oyuela Osorio', '11A-3', 'nicoll.oyuelaosorio@sanpedroclaver.edu.co', 'AES_256_FNG_ID_3_210d8ca2');",
+      "timestamp": "09:54:32 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790780122859-u7ty",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790780122859', 'stud-1790780072035', '2026-09-30', TRUE, '09:55:22 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "09:55:22 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790780131536-qa49",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '09:55:31 AM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1790779061608' AND fecha = '2026-09-30' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "09:55:31 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790780139772-psoe",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790780139772', 'stud-1790779957558', '2026-09-30', TRUE, '09:55:39 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "09:55:39 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790780145236-i2oe",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '09:55:45 AM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1790780072035' AND fecha = '2026-09-30' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "09:55:45 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790780289039-t86z",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '09:58:09 AM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1790780072035' AND fecha = '2026-09-30' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "09:58:09 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790780392291-76qs",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790780392290', 'Miguel Angel', 'Uribe Atehortua', '11A-4', 'miguelangel.uribeatehortua@sanpedroclaver.edu.co', 'AES_256_FNG_ID_4_d8ec6d8a');",
+      "timestamp": "09:59:52 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790780439101-3kda",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790780439101', 'Miguel ', 'Castrillon Henao ', '11A-5', 'miguel.castrillonhenao@sanpedroclaver.edu.co', 'AES_256_FNG_ID_5_1202378f');",
+      "timestamp": "10:00:39 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790780493534-c3md",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790780493534', 'Simón David ', 'Meza Jiménez ', '11A-6', 'simóndavid.mezajiménez@sanpedroclaver.edu.co', 'AES_256_FNG_ID_6_3d8b0b2c');",
+      "timestamp": "10:01:33 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790780572646-3uvp",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790780572646', 'Brayan', 'Arango Restrepo ', '11A-7', 'brayan.arangorestrepo@sanpedroclaver.edu.co', 'AES_256_FNG_ID_7_3cdf38a4');",
+      "timestamp": "10:02:52 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790780633923-oa1a",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790780633923', 'Brayan ', 'Acevedo Ramírez ', '11A-8', 'brayan.acevedoramírez@sanpedroclaver.edu.co', 'AES_256_FNG_ID_8_8acec35b');",
+      "timestamp": "10:03:53 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790780709264-e3om",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790780709264', 'Jean Carlos ', 'Moreno Triana ', '11A-9', 'jeancarlos.morenotriana@sanpedroclaver.edu.co', 'AES_256_FNG_ID_9_b6fb57a7');",
+      "timestamp": "10:05:09 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781557469-cq2n",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790781557469', 'stud-1790780392290', '2026-09-30', TRUE, '10:19:17 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "10:19:17 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781568099-iwa8",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '10:19:28 AM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1790779061608' AND fecha = '2026-09-30' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "10:19:28 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781577338-6w1r",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '10:19:37 AM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1790780072035' AND fecha = '2026-09-30' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "10:19:37 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781644893-undw",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790781644893', 'Ángel ', 'Tabares Aristizabal ', '11A-10', 'ángel.tabaresaristizabal@sanpedroclaver.edu.co', 'AES_256_FNG_ID_10_9b1a6c23');",
+      "timestamp": "10:20:44 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781651091-n6th",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790781651091', 'stud-1790781644893', '2026-09-30', TRUE, '10:20:51 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "10:20:51 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781700407-n0ak",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790781700407', 'Nataly ', 'Morales Villa ', '11A-11', 'nataly.moralesvilla@sanpedroclaver.edu.co', 'AES_256_FNG_ID_11_d1c6c126');",
+      "timestamp": "10:21:40 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781706245-ht6f",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790781706245', 'stud-1790781700407', '2026-09-30', TRUE, '10:21:46 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "10:21:46 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781756997-1ist",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790781756997', 'Angela Yised ', 'Vasquez Montaño ', '11A-12', 'angelayised.vasquezmontaño@sanpedroclaver.edu.co', 'AES_256_FNG_ID_12_31275e6f');",
+      "timestamp": "10:22:36 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781770878-hn4m",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790781770878', 'stud-1790781756997', '2026-09-30', TRUE, '10:22:50 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "10:22:50 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781816704-1rii",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790781816704', 'Luis Miguel ', 'Velasquez Obando ', '11A-13', 'luismiguel.velasquezobando@sanpedroclaver.edu.co', 'AES_256_FNG_ID_13_d40f012b');",
+      "timestamp": "10:23:36 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781820581-wuir",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790781820581', 'stud-1790781816704', '2026-09-30', TRUE, '10:23:40 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "10:23:40 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781913681-5yhi",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790781913681', 'Jhendrick Josue ', 'Castrillon Silva ', '11A-14', 'jhendrickjosue.castrillonsilva@sanpedroclaver.edu.co', 'AES_256_FNG_ID_14_6c8670c2');",
+      "timestamp": "10:25:13 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781917435-vgn5",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790781917435', 'stud-1790781913681', '2026-09-30', TRUE, '10:25:17 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "10:25:17 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781980426-d0ox",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790781980426', 'Andes Felipe ', 'Villa Guarin', '11A-15', 'andesfelipe.villaguarin@sanpedroclaver.edu.co', 'AES_256_FNG_ID_15_a2e2302d');",
+      "timestamp": "10:26:20 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790781991758-wbn4",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790781991758', 'stud-1790781980426', '2026-09-30', TRUE, '10:26:31 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "10:26:31 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790782109937-cqsh",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790782109937', 'Julieth Milena ', 'Morales Sanchez', '11A-16', 'juliethmilena.moralessanchez@sanpedroclaver.edu.co', 'AES_256_FNG_ID_16_61387560');",
+      "timestamp": "10:28:29 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790782113515-6lgv",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790782113515', 'stud-1790782109937', '2026-09-30', TRUE, '10:28:33 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "10:28:33 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790782210788-svlf",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790782210788', 'Salome ', 'Valencia Ossa ', '11A-17 ', 'salome.valenciaossa@sanpedroclaver.edu.co', 'AES_256_FNG_ID_17_01c780d7');",
+      "timestamp": "10:30:10 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790782216787-2sp0",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790782216787', 'stud-1790782210788', '2026-09-30', TRUE, '10:30:16 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "10:30:16 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790782267811-irnf",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790782267811', 'Guadalupe ', 'Buitrago Duran ', '11A-18', 'guadalupe.buitragoduran@sanpedroclaver.edu.co', 'AES_256_FNG_ID_18_72d1fa25');",
+      "timestamp": "10:31:07 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790782272298-u2j1",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790782272298', 'stud-1790782267811', '2026-09-30', TRUE, '10:31:12 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "10:31:12 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790782338386-3oh0",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1790782338386', 'Mariana ', 'Murillo Castaño ', '11A-19 ', 'mariana.murillocastaño@sanpedroclaver.edu.co', 'AES_256_FNG_ID_19_06484194');",
+      "timestamp": "10:32:18 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790782341766-rn9u",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1790782341766', 'stud-1790782338386', '2026-09-30', TRUE, '10:32:21 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "10:32:21 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1790782425158-noi8",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '10:33:45 AM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1790780072035' AND fecha = '2026-09-30' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "10:33:45 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1792528276377-7rhh",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1792528276369', 'Maria Jose', 'Hurtado Valencia', '11A-9', 'mariajose.hurtadovalencia@sanpedroclaver.edu.co', 'AES_256_FNG_ID_9_c4f96ed9');",
+      "timestamp": "03:31:16 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1792528386952-8v3i",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1792528386952', 'Alejandro ', 'López Londoño', '11A-41', 'alejandro.lópezlondoño@sanpedroclaver.edu.co', 'AES_256_FNG_ID_20_f9551a09');",
+      "timestamp": "03:33:06 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1792528394131-5hgz",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1792528394131', 'stud-1792528386952', '2026-10-20', TRUE, '03:33:14 PM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "03:33:14 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1792528406511-r22s",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1792528406511', 'stud-1790780709264', '2026-10-20', TRUE, '03:33:26 PM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "03:33:26 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1792528453447-vb27",
+      "query": "INSERT INTO asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1792528453447', 'stud-1790780633923', '2026-10-20', TRUE, '03:34:13 PM', 'Manual');",
+      "timestamp": "03:34:13 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1792528455731-biiu",
+      "query": "UPDATE asistencia \nSET presente = FALSE, hora_marca = NULL, metodo = NULL \nWHERE estudiante_id = 'stud-1790780633923' AND fecha = '2026-10-20';",
+      "timestamp": "03:34:15 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1792528460955-vqs7",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790780633923';\n  DELETE FROM estudiantes WHERE id = 'stud-1790780633923';\nCOMMIT;",
+      "timestamp": "03:34:20 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528463292-ry0y",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790780572646';\n  DELETE FROM estudiantes WHERE id = 'stud-1790780572646';\nCOMMIT;",
+      "timestamp": "03:34:23 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528466517-qzeq",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790782267811';\n  DELETE FROM estudiantes WHERE id = 'stud-1790782267811';\nCOMMIT;",
+      "timestamp": "03:34:26 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528468449-exkd",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790780439101';\n  DELETE FROM estudiantes WHERE id = 'stud-1790780439101';\nCOMMIT;",
+      "timestamp": "03:34:28 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528470172-plq4",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790781913681';\n  DELETE FROM estudiantes WHERE id = 'stud-1790781913681';\nCOMMIT;",
+      "timestamp": "03:34:30 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528471705-h7f7",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790779957558';\n  DELETE FROM estudiantes WHERE id = 'stud-1790779957558';\nCOMMIT;",
+      "timestamp": "03:34:31 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528473495-hzuc",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790779061608';\n  DELETE FROM estudiantes WHERE id = 'stud-1790779061608';\nCOMMIT;",
+      "timestamp": "03:34:33 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528475690-tpli",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1792528276369';\n  DELETE FROM estudiantes WHERE id = 'stud-1792528276369';\nCOMMIT;",
+      "timestamp": "03:34:35 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528477400-3062",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1792528386952';\n  DELETE FROM estudiantes WHERE id = 'stud-1792528386952';\nCOMMIT;",
+      "timestamp": "03:34:37 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528479111-8vl8",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790780493534';\n  DELETE FROM estudiantes WHERE id = 'stud-1790780493534';\nCOMMIT;",
+      "timestamp": "03:34:39 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528480766-robd",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790782109937';\n  DELETE FROM estudiantes WHERE id = 'stud-1790782109937';\nCOMMIT;",
+      "timestamp": "03:34:40 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528482576-xunb",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790781700407';\n  DELETE FROM estudiantes WHERE id = 'stud-1790781700407';\nCOMMIT;",
+      "timestamp": "03:34:42 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528484256-f6wt",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790780709264';\n  DELETE FROM estudiantes WHERE id = 'stud-1790780709264';\nCOMMIT;",
+      "timestamp": "03:34:44 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528485718-x5tj",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790782338386';\n  DELETE FROM estudiantes WHERE id = 'stud-1790782338386';\nCOMMIT;",
+      "timestamp": "03:34:45 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528487259-fy8b",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790780072035';\n  DELETE FROM estudiantes WHERE id = 'stud-1790780072035';\nCOMMIT;",
+      "timestamp": "03:34:47 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528489049-f261",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790781644893';\n  DELETE FROM estudiantes WHERE id = 'stud-1790781644893';\nCOMMIT;",
+      "timestamp": "03:34:49 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528491450-2jvb",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790780392290';\n  DELETE FROM estudiantes WHERE id = 'stud-1790780392290';\nCOMMIT;",
+      "timestamp": "03:34:51 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528493746-3sm3",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790782210788';\n  DELETE FROM estudiantes WHERE id = 'stud-1790782210788';\nCOMMIT;",
+      "timestamp": "03:34:53 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528495435-zxpr",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790781756997';\n  DELETE FROM estudiantes WHERE id = 'stud-1790781756997';\nCOMMIT;",
+      "timestamp": "03:34:55 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528497273-k0kr",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790781816704';\n  DELETE FROM estudiantes WHERE id = 'stud-1790781816704';\nCOMMIT;",
+      "timestamp": "03:34:57 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528499533-7402",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1790781980426';\n  DELETE FROM estudiantes WHERE id = 'stud-1790781980426';\nCOMMIT;",
+      "timestamp": "03:34:59 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1792528545081-2cv5",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1792528545081', 'María José', 'Hurtado Valencia', '11A-9', 'maríajosé.hurtadovalencia@sanpedroclaver.edu.co', 'AES_256_FNG_ID_9_34964a87');",
+      "timestamp": "03:35:45 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1792528552590-rzlu",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1792528552590', 'stud-1792528545081', '2026-10-20', TRUE, '03:35:52 PM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "03:35:52 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1792528617292-wioy",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1792528617292', 'Alejandro', 'Lopez Londoño', '11A-41', 'alejandro.lopezlondoño@sanpedroclaver.edu.co', 'AES_256_FNG_ID_41_749c3879');",
+      "timestamp": "03:36:57 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1792528621220-dwbj",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1792528621220', 'stud-1792528617292', '2026-10-20', TRUE, '03:37:01 PM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "03:37:01 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1792528628489-jg1i",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '03:37:08 PM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1792528545081' AND fecha = '2026-10-20' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "03:37:08 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1794340442326-uu0d",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1792528617292';\n  DELETE FROM estudiantes WHERE id = 'stud-1792528617292';\nCOMMIT;",
+      "timestamp": "02:54:02 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1794340479626-05je",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1794340479625', 'Maria de los angeles ', 'Giraldo Arroyave ', '11A-1', 'mariadelosangeles.giraldoarroyave@sanpedroclaver.edu.co', 'AES_256_FNG_ID_1_0146a0f5');",
+      "timestamp": "02:54:39 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1794340726398-q9i8",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1794340726398', 'stud-1794340479625', '2026-11-10', TRUE, '02:58:46 PM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "02:58:46 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1794342170195-05pu",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1794342170195', 'Nicoll', 'Oyuela Osorio', '11A-2', 'nicoll.oyuelaosorio@sanpedroclaver.edu.co', 'AES_256_FNG_ID_2_283d9953');",
+      "timestamp": "03:22:50 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1794342179008-fbg7",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1792528545081';\n  DELETE FROM estudiantes WHERE id = 'stud-1792528545081';\nCOMMIT;",
+      "timestamp": "03:22:59 PM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1794342223107-hg0x",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1794342223107', 'Daniel ', 'Guarin Ramirez', '11A-3', 'daniel.guarinramirez@sanpedroclaver.edu.co', 'AES_256_FNG_ID_3_8e1e1b6d');",
+      "timestamp": "03:23:43 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1794342292908-3ard",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1794342292908', 'stud-1794342170195', '2026-11-10', TRUE, '03:24:52 PM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "03:24:52 PM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1794410843009-dt13",
+      "query": "BEGIN TRANSACTION;\n  DELETE FROM asistencia WHERE estudiante_id = 'stud-1794340479625';\n  DELETE FROM estudiantes WHERE id = 'stud-1794340479625';\nCOMMIT;",
+      "timestamp": "10:27:23 AM",
+      "rowsAffected": 2
+    },
+    {
+      "id": "log-1794410940126-58pl",
+      "query": "INSERT INTO public.asistencia (id, estudiante_id, fecha, presente, hora_marca, metodo) \nVALUES ('rec-1794410940126', 'stud-1794342223107', '2026-11-11', TRUE, '10:29:00 AM', 'Biométrico') /* BIOMETRIC DIGITAL AUTHENTICATED */;",
+      "timestamp": "10:29:00 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1794485973891-z09z",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '07:19:33 AM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1794342223107' AND fecha = '2026-11-11' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "07:19:33 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1794486030125-i1qq",
+      "query": "INSERT INTO estudiantes (id, nombre, apellido, id_academico, email, huella_hash) \nVALUES ('stud-1794486030125', 'Maryuri ', 'Jaramillo', '11A-3', 'maryuri.jaramillo@sanpedroclaver.edu.co', 'AES_256_FNG_ID_3_e5dc7968');",
+      "timestamp": "07:20:30 AM",
+      "rowsAffected": 1
+    },
+    {
+      "id": "log-1794486051719-5t8l",
+      "query": "UPDATE index_public.asistencia \nSET presente = TRUE, hora_marca = '07:20:51 AM', metodo = 'Biométrico' \nWHERE estudiante_id = 'stud-1794342223107' AND fecha = '2026-11-11' /* AUTHENTICATED VIA AS608 */;",
+      "timestamp": "07:20:51 AM",
+      "rowsAffected": 1
+    }
+  ]
+}

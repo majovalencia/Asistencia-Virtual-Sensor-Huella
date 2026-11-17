@@ -82,16 +82,16 @@ export default function Sidebar({
         })}
       </nav>
 
-      {/* Biometric Security Seal */}
-      <div className="p-4 mx-4 mb-4 bg-linear-to-b from-brand-lila-light/40 to-brand-lila-light/10 rounded-2xl border border-brand-lila/10">
-        <div className="flex items-center gap-2.5 mb-2">
+      {/* Biometric Security Seal & Local Database Status */}
+      <div className="p-4 mx-4 mb-4 bg-linear-to-b from-brand-lila-light/40 to-brand-lila-light/10 rounded-2xl border border-brand-lila/10 space-y-2">
+        <div className="flex items-center gap-2.5">
           <div className="p-1 bg-brand-lila text-white rounded-full">
             <ShieldCheck size={14} />
           </div>
-          <span className="text-xs font-bold text-brand-lila-dark">Protección Biométrica</span>
+          <span className="text-xs font-bold text-brand-lila-dark">Persistencia Local en Disco</span>
         </div>
         <p className="text-[11px] text-slate-600 leading-relaxed font-normal">
-          Las huellas dactilares se encriptan con <b>AES-256</b> convirtiéndose en hashes hash-key que no exponen la biometría real del estudiante.
+          Tus huellas y datos se guardan permanentemente en <b>database.json</b> en el disco duro local. No se borrarán al cerrar la plataforma.
         </p>
       </div>
 
@@ -99,7 +99,7 @@ export default function Sidebar({
       <div className="p-4 border-t border-[#f4f4fa] bg-slate-50/70 flex items-center justify-between text-xs">
         <div className="flex items-center gap-2">
           <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></div>
-          <span className="font-semibold text-slate-700">Sensor USB Conectado</span>
+          <span className="font-semibold text-slate-700">DB Local Guardada</span>
         </div>
         <div className="flex items-center gap-1.5 text-slate-500">
           <Cpu size={14} className="text-brand-lila" />

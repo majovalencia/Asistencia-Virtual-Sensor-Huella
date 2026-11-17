@@ -115,9 +115,9 @@ export default function AddEditStudentModal({
 
   const handleCloseModal = () => {
     clearAllTimers();
-    if (realStep !== "idle" && realStep !== "success") {
+    if (arduinoSerial.getStatus() === "connected") {
       // Reset Arduino to identification mode
-      arduinoSerial.sendCommand("IDENTIFICAR");
+      arduinoSerial.sendIdentifyCommand();
     }
     onClose();
   };
@@ -183,7 +183,7 @@ export default function AddEditStudentModal({
     timeout15sRef.current = setTimeout(() => {
       if (!isCurrentRegistrationActive) return;
       isCurrentRegistrationActive = false;
-      arduinoSerial.sendCommand("IDENTIFICAR");
+      arduinoSerial.sendIdentifyCommand();
       setRealStep("error");
       setRegErrorDetails("Tiempo de espera agotado (Timeout 15s). El registro fue cancelado.");
       setGuidanceMessage("");
@@ -227,13 +227,18 @@ export default function AddEditStudentModal({
         setFingerprintHash(`AES_256_FNG_ID_${registeredId}_${randomHex}`);
         setCaptureCompleted(true);
         unsubscribe();
+
+        // Switch Arduino back to IDENTIFICAR mode for attendance scanning
+        setTimeout(() => {
+          arduinoSerial.sendIdentifyCommand();
+        }, 500);
       }
 
       // 4. REGISTRO:ERROR:... -> Registration failed
       else if (message.includes("REGISTRO:ERROR") || (message.includes("ERROR:") && !message.includes("ESTADO"))) {
         isCurrentRegistrationActive = false;
         clearAllTimers();
-        arduinoSerial.sendCommand("IDENTIFICAR");
+        arduinoSerial.sendIdentifyCommand();
         setRealStep("error");
         
         if (message.includes("NO_COINCIDEN")) {
@@ -268,6 +273,10 @@ export default function AddEditStudentModal({
 
     const formattedId = idAcademico.toUpperCase().startsWith("11A-") ? idAcademico : `11A-${idAcademico}`;
     const generatedEmail = `${name.toLowerCase().replace(/\s+/g, "")}.${lastName.toLowerCase().replace(/\s+/g, "")}@sanpedroclaver.edu.co`;
+
+    if (arduinoSerial.getStatus() === "connected") {
+      arduinoSerial.sendIdentifyCommand();
+    }
 
     onSave({
       name,

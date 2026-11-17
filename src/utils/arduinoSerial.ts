@@ -180,7 +180,7 @@ class ArduinoSerialManager {
     try {
       const textEncoder = new TextEncoder();
       const writer = this.port.writable.getWriter();
-      // Enviar con \r\n (CRLF) para máxima compatibilidad con esquemas de Arduino
+      // Use \r\n (CRLF) for standard Arduino serial communication
       await writer.write(textEncoder.encode(`${cmd}\r\n`));
       writer.releaseLock();
       this.addLog(`>>> ENVIADO: ${cmd}`);
@@ -190,6 +190,11 @@ class ArduinoSerialManager {
       this.addLog(`[ERROR] Fallo enviando comando: ${err?.message}`);
       return false;
     }
+  }
+
+  public async sendIdentifyCommand(): Promise<boolean> {
+    if (this.status !== "connected") return false;
+    return await this.sendCommand("IDENTIFICAR");
   }
 
   public async disconnect(): Promise<void> {
@@ -215,16 +220,58 @@ class ArduinoSerialManager {
 export const arduinoSerial = new ArduinoSerialManager();
 
 // Utilidades para mapeo de estudiantes e IDs de Arduino (1-127)
-export function findStudentByArduinoId(students: any[], arduinoId: number) {
-  const targetIdStr = String(arduinoId);
+export function parseArduinoIdFromLine(rawLine: string): { id: number; confidence?: number } | null {
+  const cleanLine = rawLine.trim();
+
+  // Ignore registration / status log messages
+  if (cleanLine.includes("REGISTRO") || cleanLine.includes("REGISTRAR") || cleanLine.includes("GUARDAR")) {
+    return null;
+  }
+
+  // 1. Match "Found ID #1 with confidence of 120", "ID: 1", "ID #1", "FOUND ID: 1", "HUELLA ID: 1", "ID:1:CONF:100"
+  const idMatch = cleanLine.match(/(?:ID|FOUND|HUELLA|FINGERPRINT|SLOT)\s*(?:ID)?\s*#?\s*:?\s*(\d+)/i);
+  if (idMatch) {
+    const id = parseInt(idMatch[1], 10);
+    if (!isNaN(id)) {
+      let confidence: number | undefined = undefined;
+      const confMatch = cleanLine.match(/CONF(?:IDENCE)?\s*[:=]?\s*(\d+)/i);
+      if (confMatch) {
+        confidence = parseInt(confMatch[1], 10);
+      }
+      return { id, confidence };
+    }
+  }
+
+  // 2. Fallback: Match #X (e.g. "Found #1", "Huella #1", "#1")
+  const hashMatch = cleanLine.match(/#(\d{1,3})/);
+  if (hashMatch) {
+    const id = parseInt(hashMatch[1], 10);
+    if (!isNaN(id)) return { id };
+  }
+
+  // 3. Fallback: Standalone number line (e.g. "1" or "01")
+  if (/^\d{1,3}$/.test(cleanLine)) {
+    const id = parseInt(cleanLine, 10);
+    if (!isNaN(id) && id >= 0 && id <= 127) return { id };
+  }
+
+  return null;
+}
+
+export function findStudentByArduinoId(students: any[], arduinoId: number | string) {
+  const numericId = typeof arduinoId === "number" ? arduinoId : parseInt(String(arduinoId), 10);
+  if (isNaN(numericId)) return undefined;
+
   return students.find((s) => {
     if (s.fingerprintHash) {
       const matchHash = s.fingerprintHash.match(/ID_(\d+)/i);
-      if (matchHash && parseInt(matchHash[1], 10) === arduinoId) return true;
+      if (matchHash && parseInt(matchHash[1], 10) === numericId) return true;
     }
-    if (s.id === `stud-${targetIdStr}` || s.id === targetIdStr) return true;
-    const academicNum = parseInt(s.idAcademico.replace(/\D/g, ""), 10);
-    if (!isNaN(academicNum) && academicNum === arduinoId) return true;
+    if (s.id === `stud-${numericId}` || s.id === String(numericId)) return true;
+    if (s.idAcademico) {
+      const academicNum = parseInt(s.idAcademico.replace(/\D/g, ""), 10);
+      if (!isNaN(academicNum) && academicNum === numericId) return true;
+    }
     return false;
   });
 }
