@@ -1,0 +1,6 @@
+{
+  "name": "Asistencia Biométrica 11A",
+  "description": "Sistema de asistencia virtual con simulación de sensor de huella dactilar para estudiantes del grado 11A, con diseño en azul, blanco y lila.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

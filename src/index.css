@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@theme {
+  --font-family-hanken: 'Hanken Grotesk', sans-serif;
+  --font-family-mono: 'Fira Code', monospace;
+  --color-brand-blue-deep: #003087;
+  --color-brand-blue: #004ac6;
+  --color-brand-blue-light: #e6eefc;
+  --color-brand-lila: #8455ef;
+  --color-brand-lila-light: #f3efff;
+  --color-brand-lila-dark: #5b21b6;
+}
+
+/* Biometric Glowing rings */
+.scanner-pulse {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(132, 85, 239, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 16px rgba(132, 85, 239, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(132, 85, 239, 0);
+  }
+}
+
+.success-pop {
+  animation: success-pop-anim 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes success-pop-anim {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Custom styling for print mode */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}
+
